@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.portfolio.apikb.repository.PersonaRepository;
+import java.util.ArrayList;
 import java.util.List;
 
         
@@ -22,8 +23,8 @@ public class PersonaService implements IPersonaService{
     }
     
     @Override
-    public void savePersona(Persona persona){
-        persoRepo.save(persona);
+    public Persona savePersona(Persona persona){
+        return persoRepo.save(persona);
     }
     @Override
     public Optional<Persona> getPersonaByID(Long id){
@@ -33,6 +34,7 @@ public class PersonaService implements IPersonaService{
     public List<Persona> getPersonaByNombre(String nombre){
         return persoRepo.findByNombre(nombre);
     }
+   
     @Override
     public boolean removePersona(Long id){
         try{

@@ -5,6 +5,8 @@ import com.portfolio.apikb.models.Skill;
 import com.portfolio.apikb.services.SkillService;
 import java.util.ArrayList;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +39,7 @@ public class SkillController {
     public Optional<Skill> getSkillByID(@PathVariable("id") Long id){
         return skillService.getSkillByID(id);
     }
-     @GetMapping("/query")
+     @GetMapping("/{nombre}")
     public ArrayList<Skill> getSkillByName(@RequestParam("nombre") String name){
         return skillService.getSkillByName(name);
     }
@@ -49,7 +51,7 @@ public class SkillController {
             return "No se pudo eliminar los datos del skill";
         }
     }
-    @PutMapping ("update/{id}")
+    @PutMapping ("/update/{id}")
     public Skill updateSkill (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("progress") int progress,
@@ -70,6 +72,18 @@ public class SkillController {
         
         skillService.saveSkill(skill);
         return skill;
+    }
+    
+    @PutMapping("/edit/{id}")
+    public Skill cambiarSkill(@PathVariable("id") Long id, @RequestBody Skill skillTochange) {
+
+        Skill s = skillService.findSkill(id);
+        System.out.println(s);
+        skillTochange.setId(s.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(skillTochange, s);
+        return skillService.saveSkill(s);
     }
     
                          

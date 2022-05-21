@@ -25,4 +25,5 @@ public class Skill {
     private String outerStrokeColor;
     private String innerStrokeColor;
     
+    
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IPersonaService {
     
     public List<Persona> getPersona();
-    public void savePersona(Persona persona);
+    public Persona savePersona(Persona persona);
     public boolean deletePersona(Long id);
     public Persona findPersona(Long id);
     public Optional<Persona> getPersonaByID(Long id);
