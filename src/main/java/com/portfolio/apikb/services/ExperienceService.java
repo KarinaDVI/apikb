@@ -20,10 +20,14 @@ public class ExperienceService {
     public Experience saveExperience(Experience experience){
         return expeRepo.save(experience);
     }
-    public Optional<Experience> getExperiecnceByID(Long id){
+    public Optional<Experience> getExperienceByID(Long id){
         return expeRepo.findById(id);
     }
-   
+   //de apiHernan
+    public Experience getOneExperienceByID(Long id) {
+        return expeRepo.findById(id).get();
+    }
+    
     public boolean removeExperience(Long id){
         try{
             expeRepo.deleteById(id);
@@ -37,8 +41,8 @@ public class ExperienceService {
         return expe;
     }
 
-    public Optional<Experience> getExperienceByID(Long id) {
-        return expeRepo.findById(id);
+    public Optional<Experience> getExperienceByPosition(String position) {
+        return expeRepo.findByPosition(position);
     }
 
    

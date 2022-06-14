@@ -23,7 +23,8 @@ public class ProjectService {
     public Optional<Project> getProjectByID(Long id){
         return projectRepo.findById(id);
     }
-    public ArrayList<Project> getProjectByName(String name){
+    
+    public Optional<Project> getProjectByName(String name){
         return projectRepo.findByName(name);
     }
     public boolean removeProject(Long id){
@@ -37,6 +38,10 @@ public class ProjectService {
     public Project findProject(Long id){
         Project project = projectRepo.findById(id).orElse(null);
         return project;
+    }
+
+    public Project getOneProjectByID(Long id) {
+        return projectRepo.findById(id).get();
     }
 
 }

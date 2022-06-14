@@ -1,6 +1,7 @@
 
 package com.portfolio.apikb.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @Entity
-@Table(name="persona_table")
+@Table(name="persona")
 public class Persona {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class Persona {
     private String apellido;
     private int edad;
     private String seniority;
+    @Column(name="urlimage",length=2048)
     private String urlimage;
     private String company;
     private String position;

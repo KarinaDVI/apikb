@@ -17,9 +17,8 @@ public class PersonaService implements IPersonaService{
     PersonaRepository persoRepo;
     
     @Override
-    public List<Persona>getPersona(){
-        List<Persona>persona=persoRepo.findAll();
-        return persona;
+    public ArrayList<Persona>getPersona(){
+        return(ArrayList<Persona>)persoRepo.findAll();
     }
     
     @Override
@@ -31,8 +30,13 @@ public class PersonaService implements IPersonaService{
         return persoRepo.findById(id);
     }
     @Override
-    public List<Persona> getPersonaByNombre(String nombre){
+    public Optional<Persona> getPersonaByNombre(String nombre){
         return persoRepo.findByNombre(nombre);
+    }
+    //de apiHernan
+    @Override
+    public Persona getOnePersonByID(Long id) {
+        return persoRepo.findById(id).get();
     }
    
     @Override

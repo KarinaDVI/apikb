@@ -1,6 +1,7 @@
 
 package com.portfolio.apikb.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +21,10 @@ public class Experience {
     private Long id;
     private String position;
     private String company;
-    private String img;
     private int starts;
     private int ends;
+    @Column(name="urlimg",length=2048)
+    private String urlimg;
+    private String mode;
     
 }

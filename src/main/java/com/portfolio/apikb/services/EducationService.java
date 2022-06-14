@@ -24,7 +24,10 @@ public class EducationService {
     public Optional<Education> getEducationByID(Long id){
         return eduRepo.findById(id);
     }
-    public ArrayList<Education> getEducationByTitle(String title){
+    public Education getOneEducationByID(Long id) {
+        return eduRepo.findById(id).get();
+    }
+    public Optional<Education> getEducationByTitle(String title){
         return eduRepo.findByTitle(title);
     }
     public boolean removeEducation(Long id){

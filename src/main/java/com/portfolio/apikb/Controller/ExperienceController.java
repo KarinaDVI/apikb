@@ -5,7 +5,11 @@ import com.portfolio.apikb.models.Experience;
 import com.portfolio.apikb.services.ExperienceService;
 import java.util.ArrayList;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +37,18 @@ public class ExperienceController {
     public Experience saveExperience(@RequestBody Experience experience){
         return experienceService.saveExperience(experience);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Experience> getExperienceByID(@PathVariable("id") Long id){
         return experienceService.getExperienceByID(id);
+    }
+    @GetMapping("/one/{id}")
+    public ResponseEntity<Experience> getExperienceById(@PathVariable(value = "id") Long id) {
+        Experience experience = experienceService.getOneExperienceByID(id);
+        return new ResponseEntity<>(experience, HttpStatus.OK);
+    }
+    @GetMapping("/getname/{position}")
+    public Optional<Experience> getExperienceByPosition(@RequestParam("position") String position){
+        return experienceService.getExperienceByPosition(position);
     }
 
     @DeleteMapping("/{id}")
@@ -50,20 +63,34 @@ public class ExperienceController {
     public Experience updateExperience (@PathVariable Long id,
                     @RequestParam("position") String position,
                     @RequestParam("company") String company,
-                    @RequestParam("img") String img,
                     @RequestParam("start") int starts,
-                    @RequestParam("ends") int ends
+                    @RequestParam("ends") int ends,
+                    @RequestParam("urlimg") String urlimg,
+                    @RequestParam("mode") String mode
                     ){
         
         Experience experience = experienceService.findExperience(id);
         
         experience.setPosition(position);
         experience.setCompany(company);
-        experience.setImg(img);
+        experience.setUrlimg(urlimg);
         experience.setStarts(starts);
         experience.setEnds(ends);
         experienceService.saveExperience(experience);
         return experience;
+    }
+     //Usar: Hernan nuevo
+   @PutMapping("/edit/{id}")
+    public ResponseEntity<Experience> updateExperience(@PathVariable("id") Long id, @RequestBody Experience experienceRequest) {
+        Experience experience =experienceService.getOneExperienceByID(id);
+        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
+        //skill.setPerson(skillRequest.getPerson());
+        experienceRequest.setId(experience.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(experienceRequest, experience);
+
+        return new ResponseEntity<>(experienceService.saveExperience(experience), HttpStatus.OK);
     }
     
                         

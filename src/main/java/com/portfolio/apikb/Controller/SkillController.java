@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,14 +37,27 @@ public class SkillController {
     public Skill saveSkill(@RequestBody Skill skill){
         return skillService.saveSkill(skill);
     }
-    @GetMapping("/{id}")
+    
+    //Metodo de apikb
+    
+    @GetMapping("/id/{id}")
     public Optional<Skill> getSkillByID(@PathVariable("id") Long id){
         return skillService.getSkillByID(id);
     }
-     @GetMapping("/{nombre}")
-    public ArrayList<Skill> getSkillByName(@RequestParam("nombre") String name){
+    
+    
+    //Metodo de apiHernan
+    @GetMapping("/one/{id}")
+    public ResponseEntity<Skill> getSkillById(@PathVariable(value = "id") Long id) {
+        Skill skill = skillService.getOneSkillByID(id);
+        return new ResponseEntity<>(skill, HttpStatus.OK);
+    }
+    
+     @GetMapping("/getname/{nombre}")
+    public Optional<Skill> getSkillByName(@RequestParam("nombre") String name){
         return skillService.getSkillByName(name);
     }
+    
     @DeleteMapping("/{id}")
     public String removeSkill(@PathVariable("id") Long id){
         if(skillService.removeSkill(id)){
@@ -51,7 +66,8 @@ public class SkillController {
             return "No se pudo eliminar los datos del skill";
         }
     }
-    @PutMapping ("/update/{id}")
+    //MBG
+    @PutMapping ("/editm/{id}")
     public Skill updateSkill (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("progress") int progress,
@@ -74,7 +90,8 @@ public class SkillController {
         return skill;
     }
     
-    @PutMapping("/edit/{id}")
+    //Hernan nuevo
+    @PutMapping("/edith/{id}")
     public Skill cambiarSkill(@PathVariable("id") Long id, @RequestBody Skill skillTochange) {
 
         Skill s = skillService.findSkill(id);
@@ -86,6 +103,34 @@ public class SkillController {
         return skillService.saveSkill(s);
     }
     
-                         
+    //Usar: Hernan nuevo
+   @PutMapping("/edit/{id}")
+    public ResponseEntity<Skill> updateSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
+        Skill skill =skillService.getOneSkillByID(id);
+        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
+        //skill.setPerson(skillRequest.getPerson());
+        skillRequest.setId(skill.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(skillRequest, skill);
+
+        return new ResponseEntity<>(skillService.saveSkill(skill), HttpStatus.OK);
+    }
+    
+    //Refrito del crud de productos
+    @PutMapping("/edit2/{id}")
+    public ResponseEntity<?> editSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
+        
+        Skill skill =skillService.getSkillByID(id).get();
+        skill.setName(skillRequest.getName());
+        skill.setProgress(skillRequest.getProgress());
+        skill.setConfirms(skillRequest.getConfirms());
+        skill.setConfirmsNames(skillRequest.getConfirmsNames());
+        skill.setInnerStrokeColor(skillRequest.getInnerStrokeColor());
+        skill.setOuterStrokeColor(skillRequest.getOuterStrokeColor());
+        skillService.saveSkill(skill);
+
+        return new ResponseEntity<>("Skill actualizado", HttpStatus.OK);
+    }
                               
 }

@@ -19,12 +19,22 @@ public class SkillService {
     public Skill saveSkill(Skill skill){
         return skillRepo.save(skill);
     }
+    
+    //Repo de apikb
     public Optional<Skill> getSkillByID(Long id){
         return skillRepo.findById(id);
     }
-    public ArrayList<Skill> getSkillByName(String name){
+    
+    
+    //de apiHernan
+    public Skill getOneSkillByID(Long id) {
+        return skillRepo.findById(id).get();
+    }
+    
+    public Optional<Skill> getSkillByName(String name){
         return skillRepo.findByName(name);
     }
+    
     public boolean removeSkill(Long id){
         try{
             skillRepo.deleteById(id);

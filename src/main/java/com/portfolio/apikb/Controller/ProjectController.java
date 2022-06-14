@@ -5,7 +5,11 @@ import com.portfolio.apikb.models.Project;
 import com.portfolio.apikb.services.ProjectService;
 import java.util.ArrayList;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +36,17 @@ public class ProjectController {
     public Project saveProject(@RequestBody Project project){
         return projectService.saveProject(project);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Project> getProjectByID(@PathVariable("id") Long id){
         return projectService.getProjectByID(id);
     }
-     @GetMapping("/query")
-    public ArrayList<Project> getProjectByName(@RequestParam("nombre") String name){
+    @GetMapping("/one/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable(value = "id") Long id) {
+        Project project = projectService.getOneProjectByID(id);
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+     @GetMapping("/getname/{name}")
+    public Optional<Project> getProjectByName(@RequestParam("nombre") String name){
         return projectService.getProjectByName(name);
     }
     @DeleteMapping("/{id}")
@@ -52,38 +61,29 @@ public class ProjectController {
     public Project updateProject (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("acerca") String aboutProject,
-                    @RequestParam("img") String img
+                    @RequestParam("urlimg") String urlimg
                     ){
         
         Project project = projectService.findProject(id);
         
         project.setName(nuevoNombre);
-        project.setAboutProyect(aboutProject);
-        project.setImg(img);
-        
-        
+        project.setAboutProject(aboutProject);
+        project.setUrlimg(urlimg);
         projectService.saveProject(project);
         return project;
     }
-    
-    /*
-    @PutMapping ("edit/{id}")
-    public Project editProject (@PathVariable("id") Long id, 
-                        @RequestBody AboutDto aboutDTO){
-        
-        Project project=projectService.findProject(id);
-        
-        project.setNombre(aboutDTO.getNombre());
-        project.setEdad(aboutDTO.getEdad());
-        project.setSeniority(aboutDTO.getSeniority());
-        project.setImage(aboutDTO.getImage());
-        project.setCompany(aboutDTO.getCompany());
-        project.setPosition(aboutDTO.getPosition());
-        project.setAbouts(aboutDTO.getAbouts());
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Project> updateProject(@PathVariable("id") Long id, @RequestBody Project projectRequest) {
+        Project project =projectService.getOneProjectByID(id);
+        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
+        //skill.setPerson(skillRequest.getPerson());
+        projectRequest.setId(project.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(projectRequest, project);
 
-        projectService.saveProject(project);
-        return project;
+        return new ResponseEntity<>(projectService.saveProject(project), HttpStatus.OK);
     }
-       */                       
+                        
                               
 }

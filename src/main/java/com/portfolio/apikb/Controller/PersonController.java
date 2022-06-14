@@ -37,12 +37,18 @@ public class PersonController {
         ipersonaService.savePersona(persona);
         return "Persona creada correctamente";
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Persona> getPersonaByID(@PathVariable("id") Long id){
         return ipersonaService.getPersonaByID(id);
     }
-     @GetMapping("/{nombre}")
-    public List<Persona> getPersonaByNombre(@RequestParam("nombre") String nombre){
+    //Metodo de apiHernan
+    @GetMapping("/one/{id}")
+    public ResponseEntity<Persona> getPersonaById(@PathVariable(value = "id") Long id) {
+        Persona persona = ipersonaService.getOnePersonByID(id);
+        return new ResponseEntity<>(persona, HttpStatus.OK);
+    }
+     @GetMapping("/getname/{nombre}")
+    public Optional<Persona> getPersonaByNombre(@RequestParam("nombre") String nombre){
         return ipersonaService.getPersonaByNombre(nombre);
     }
     @DeleteMapping("/{id}")
@@ -53,7 +59,8 @@ public class PersonController {
             return "No se pudo eliminar los datos del acercaDe";
         }
     }
-    @PutMapping ("/update/{id}")
+    //MGB
+    @PutMapping ("/editm/{id}")
     public Persona updatePersona (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("apellido") String nuevoApellido,
@@ -80,7 +87,7 @@ public class PersonController {
     }
     
     //Profe sincrónico:
-    @PutMapping("/edit/{id}")
+    @PutMapping("/edith/{id}")
     public Persona updatePerson(@PathVariable("id") Long id, @RequestBody Persona personaTochange) {
 
         Persona p = ipersonaService.findPersona(id);
@@ -91,12 +98,24 @@ public class PersonController {
         return ipersonaService.savePersona(p);
     }
     
-    @PutMapping("/modify/{id}")
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Persona> updateSkill(@PathVariable("id") Long id, @RequestBody Persona personaRequest) {
+        Persona persona =ipersonaService.getOnePersonByID(id);
+        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
+        //skill.setPerson(skillRequest.getPerson());
+        personaRequest.setId(persona.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(personaRequest, persona);
+        return new ResponseEntity<>(ipersonaService.savePersona(persona), HttpStatus.OK);
+    }
+    
+    //Del crud de producto
+    @PutMapping("/editp/{id}")
     public ResponseEntity<?> update(@PathVariable("id")Long id, @RequestBody Persona personaRequest){
        
         Persona persona = ipersonaService.getPersonaByID(id).get();
         persona.setNombre(personaRequest.getNombre());
-        
         persona.setNombre(personaRequest.getNombre());
         persona.setEdad(personaRequest.getEdad());
         persona.setSeniority(personaRequest.getSeniority());
@@ -104,7 +123,6 @@ public class PersonController {
         persona.setCompany(personaRequest.getCompany());
         persona.setPosition(personaRequest.getPosition());
         persona.setAbouts(personaRequest.getAbouts());
-        
         return new ResponseEntity(("persona actualizada"), HttpStatus.OK);
     }
                               

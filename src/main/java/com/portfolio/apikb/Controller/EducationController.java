@@ -5,7 +5,11 @@ import com.portfolio.apikb.models.Education;
 import com.portfolio.apikb.services.EducationService;
 import java.util.ArrayList;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +34,21 @@ public class EducationController {
         return educationService.getAllEducation();
     }
     @PostMapping()
-    public Education saveExperience(@RequestBody Education education){
+    public Education saveEducation(@RequestBody Education education){
         return educationService.saveEducation(education);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Education> getEducationByID(@PathVariable("id") Long id){
         return educationService.getEducationByID(id);
+    }
+    @GetMapping("/one/{id}")
+    public ResponseEntity<Education> getEducationById(@PathVariable(value = "id") Long id) {
+        Education education = educationService.getOneEducationByID(id);
+        return new ResponseEntity<>(education, HttpStatus.OK);
+    }
+     @GetMapping("/getname/{title}")
+    public Optional<Education> getEducationByName(@RequestParam("title") String title){
+        return educationService.getEducationByTitle(title);
     }
 
     @DeleteMapping("/{id}")
@@ -46,13 +59,36 @@ public class EducationController {
             return "No se pudo eliminar los datos del skill";
         }
     }
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Education> updateEducation(@PathVariable("id") Long id, @RequestBody Education educationRequest) {
+        Education education =educationService.getOneEducationByID(id);
+        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
+        //skill.setPerson(skillRequest.getPerson());
+        educationRequest.setId(education.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(educationRequest, education);
+        return new ResponseEntity<>(educationService.saveEducation(education), HttpStatus.OK);
+    }
+    @PutMapping("/editMM/{id}")
+    public Education editarEducation(@PathVariable("id") Long id, @RequestBody Education educationTochange) {
+
+        Education ed = educationService.findEducation(id);
+        System.out.println(ed);
+        educationTochange.setId(ed.getId());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(educationTochange, ed);
+        return educationService.saveEducation(ed);
+    }
+    
     @PutMapping ("update/{id}")
     public Education updateEducation (@PathVariable Long id,
                     @RequestParam("school") String school,
                     @RequestParam("title") String title,
                     @RequestParam("starts") int starts,
                     @RequestParam("ends") int ends,
-                    @RequestParam("img") String img
+                    @RequestParam("urlimg") String urlimg
                     ){
         
         Education education = educationService.findEducation(id);
@@ -61,7 +97,7 @@ public class EducationController {
         education.setTitle(title);
         education.setStarts(starts);
         education.setEnds(ends);
-        education.setImg(img);
+        education.setUrlimg(urlimg);
         
         educationService.saveEducation(education);
         return education;

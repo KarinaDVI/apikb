@@ -1,6 +1,7 @@
 
 package com.portfolio.apikb.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +21,9 @@ public class Project {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String aboutProyect;
-    private String img;
+    private String aboutProject;
+    @Column(name="urlimg",length=2048)
+    private String urlimg;
     
     
 }
