@@ -21,6 +21,7 @@ public class Persona {
     private String nombre;
     private String apellido;
     private int edad;
+    private String fechaNac;
     private String seniority;
     @Column(name="urlimage",length=2048)
     private String urlimage;

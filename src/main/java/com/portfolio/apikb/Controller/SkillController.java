@@ -10,6 +10,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,7 @@ public class SkillController {
     public ArrayList<Skill> getAllSkills(){
         return skillService.getAllSkills();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public Skill saveSkill(@RequestBody Skill skill){
         return skillService.saveSkill(skill);
@@ -58,6 +61,7 @@ public class SkillController {
         return skillService.getSkillByName(name);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String removeSkill(@PathVariable("id") Long id){
         if(skillService.removeSkill(id)){
@@ -67,6 +71,7 @@ public class SkillController {
         }
     }
     //MBG
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("/editm/{id}")
     public Skill updateSkill (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
@@ -91,6 +96,7 @@ public class SkillController {
     }
     
     //Hernan nuevo
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edith/{id}")
     public Skill cambiarSkill(@PathVariable("id") Long id, @RequestBody Skill skillTochange) {
 
@@ -104,6 +110,7 @@ public class SkillController {
     }
     
     //Usar: Hernan nuevo
+   @PreAuthorize("hasRole('ADMIN')")
    @PutMapping("/edit/{id}")
     public ResponseEntity<Skill> updateSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
         Skill skill =skillService.getOneSkillByID(id);
@@ -118,6 +125,7 @@ public class SkillController {
     }
     
     //Refrito del crud de productos
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit2/{id}")
     public ResponseEntity<?> editSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
         

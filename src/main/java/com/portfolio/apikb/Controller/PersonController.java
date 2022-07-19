@@ -10,6 +10,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class PersonController {
     public List<Persona> getAllAbout(){
         return ipersonaService.getPersona();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public String savePersona(@RequestBody Persona persona){
         ipersonaService.savePersona(persona);
@@ -51,6 +53,8 @@ public class PersonController {
     public Optional<Persona> getPersonaByNombre(@RequestParam("nombre") String nombre){
         return ipersonaService.getPersonaByNombre(nombre);
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String removePersona(@PathVariable("id") Long id){
         if(ipersonaService.deletePersona(id)){
@@ -60,11 +64,13 @@ public class PersonController {
         }
     }
     //MGB
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("/editm/{id}")
     public Persona updatePersona (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("apellido") String nuevoApellido,
                     @RequestParam("edad") int nuevaEdad,
+                    @RequestParam("fechaNac") String nuevaFechaNac,
                     @RequestParam("seniority") String nuevaSeniority,
                     @RequestParam("urlimage") String nuevaImage,
                     @RequestParam("company") String nuevaCompany,
@@ -76,6 +82,7 @@ public class PersonController {
         persona.setNombre(nuevoNombre);
         persona.setApellido(nuevoApellido);
         persona.setEdad(nuevaEdad);
+        persona.setFechaNac(nuevaFechaNac);
         persona.setSeniority(nuevaSeniority);
         persona.setUrlimage(nuevaImage);
         persona.setCompany(nuevaCompany);
@@ -87,6 +94,7 @@ public class PersonController {
     }
     
     //Profe sincrónico:
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edith/{id}")
     public Persona updatePerson(@PathVariable("id") Long id, @RequestBody Persona personaTochange) {
 
@@ -98,6 +106,7 @@ public class PersonController {
         return ipersonaService.savePersona(p);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Persona> updateSkill(@PathVariable("id") Long id, @RequestBody Persona personaRequest) {
         Persona persona =ipersonaService.getOnePersonByID(id);
@@ -111,6 +120,7 @@ public class PersonController {
     }
     
     //Del crud de producto
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/editp/{id}")
     public ResponseEntity<?> update(@PathVariable("id")Long id, @RequestBody Persona personaRequest){
        
@@ -118,6 +128,7 @@ public class PersonController {
         persona.setNombre(personaRequest.getNombre());
         persona.setNombre(personaRequest.getNombre());
         persona.setEdad(personaRequest.getEdad());
+        persona.setFechaNac(personaRequest.getFechaNac());
         persona.setSeniority(personaRequest.getSeniority());
         persona.setUrlimage(personaRequest.getUrlimage());
         persona.setCompany(personaRequest.getCompany());

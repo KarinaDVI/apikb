@@ -10,6 +10,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class ProjectController {
     public ArrayList<Project> getAllProject(){
         return projectService.getAllProjects();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public Project saveProject(@RequestBody Project project){
         return projectService.saveProject(project);
@@ -49,6 +51,7 @@ public class ProjectController {
     public Optional<Project> getProjectByName(@RequestParam("nombre") String name){
         return projectService.getProjectByName(name);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String removeProject(@PathVariable("id") Long id){
         if(projectService.removeProject(id)){
@@ -57,6 +60,7 @@ public class ProjectController {
             return "No se pudo eliminar los datos del proyecto";
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Project updateProject (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
@@ -72,6 +76,7 @@ public class ProjectController {
         projectService.saveProject(project);
         return project;
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable("id") Long id, @RequestBody Project projectRequest) {
         Project project =projectService.getOneProjectByID(id);

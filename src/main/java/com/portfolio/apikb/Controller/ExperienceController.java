@@ -10,6 +10,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class ExperienceController {
     public ArrayList<Experience> getAllExperience(){
         return experienceService.getAllExperience();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public Experience saveExperience(@RequestBody Experience experience){
         return experienceService.saveExperience(experience);
@@ -50,7 +52,7 @@ public class ExperienceController {
     public Optional<Experience> getExperienceByPosition(@RequestParam("position") String position){
         return experienceService.getExperienceByPosition(position);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String removeExperience(@PathVariable("id") Long id){
         if(experienceService.removeExperience(id)){
@@ -59,6 +61,7 @@ public class ExperienceController {
             return "No se pudo eliminar los datos del skill";
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Experience updateExperience (@PathVariable Long id,
                     @RequestParam("position") String position,
@@ -80,6 +83,7 @@ public class ExperienceController {
         return experience;
     }
      //Usar: Hernan nuevo
+   @PreAuthorize("hasRole('ADMIN')")
    @PutMapping("/edit/{id}")
     public ResponseEntity<Experience> updateExperience(@PathVariable("id") Long id, @RequestBody Experience experienceRequest) {
         Experience experience =experienceService.getOneExperienceByID(id);

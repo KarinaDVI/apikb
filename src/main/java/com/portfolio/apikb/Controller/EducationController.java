@@ -10,6 +10,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class EducationController {
     public ArrayList<Education> getAllEducation(){
         return educationService.getAllEducation();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public Education saveEducation(@RequestBody Education education){
         return educationService.saveEducation(education);
@@ -50,7 +52,7 @@ public class EducationController {
     public Optional<Education> getEducationByName(@RequestParam("title") String title){
         return educationService.getEducationByTitle(title);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String removeExperience(@PathVariable("id") Long id){
         if(educationService.removeEducation(id)){
@@ -59,6 +61,7 @@ public class EducationController {
             return "No se pudo eliminar los datos del skill";
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Education> updateEducation(@PathVariable("id") Long id, @RequestBody Education educationRequest) {
         Education education =educationService.getOneEducationByID(id);
@@ -70,6 +73,7 @@ public class EducationController {
         modelMapper.map(educationRequest, education);
         return new ResponseEntity<>(educationService.saveEducation(education), HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/editMM/{id}")
     public Education editarEducation(@PathVariable("id") Long id, @RequestBody Education educationTochange) {
 
@@ -81,7 +85,7 @@ public class EducationController {
         modelMapper.map(educationTochange, ed);
         return educationService.saveEducation(ed);
     }
-    
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Education updateEducation (@PathVariable Long id,
                     @RequestParam("school") String school,
