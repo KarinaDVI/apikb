@@ -40,14 +40,6 @@ public class SkillController {
         return skillService.saveSkill(skill);
     }
     
-    //Metodo de apikb
-    /*
-    @GetMapping("/id/{id}")
-    public Optional<Skill> getSkillByID(@PathVariable("id") Long id){
-        return skillService.getSkillByID(id);
-    }
-    */
-    
     //Metodo de apiHernan
     @GetMapping("/one/{id}")
     public ResponseEntity<Skill> getSkillById(@PathVariable(value = "id") Long id) {
@@ -69,56 +61,12 @@ public class SkillController {
             return "No se pudo eliminar los datos del skill";
         }
     }
-    //MBG
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping ("/editm/{id}")
-    public Skill updateSkill (@PathVariable Long id,
-                    @RequestParam("nombre") String nuevoNombre,
-                    @RequestParam("progress") int progress,
-                    @RequestParam("confirmsNames") String confirmsNames,
-                    @RequestParam("outerColor") String outerStrokeColor,
-                    @RequestParam("innerColor") String innerStrokeColor,
-                    @RequestParam("imageSrc") String imageSrc
-                    ){
-        
-        Skill skill = skillService.findSkill(id);
-        
-        skill.setName(nuevoNombre);
-        skill.setProgress(progress);
-        skill.setConfirmsNames(confirmsNames);
-        skill.setOuterStrokeColor(outerStrokeColor);
-        skill.setInnerStrokeColor(innerStrokeColor); 
-        skill.setImageSrc(imageSrc); 
-        
-        skillService.saveSkill(skill);
-        return skill;
-    }
-*/
-    
-    //Hernan nuevo
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/edith/{id}")
-    public Skill cambiarSkill(@PathVariable("id") Long id, @RequestBody Skill skillTochange) {
-
-        Skill s = skillService.findSkill(id);
-        System.out.println(s);
-        skillTochange.setId(s.getId());
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.map(skillTochange, s);
-        return skillService.saveSkill(s);
-    }
-*/
-    
+ 
     //Usar: Hernan nuevo
    @PreAuthorize("hasRole('ADMIN')")
    @PutMapping("/edit/{id}")
     public ResponseEntity<Skill> updateSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
         Skill skill =skillService.getOneSkillByID(id);
-        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
-        //skill.setPerson(skillRequest.getPerson());
         skillRequest.setId(skill.getId());
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
@@ -126,25 +74,5 @@ public class SkillController {
 
         return new ResponseEntity<>(skillService.saveSkill(skill), HttpStatus.OK);
     }
-    
-    //Refrito del crud de productos
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/edit2/{id}")
-    public ResponseEntity<?> editSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
-        
-        Skill skill =skillService.getSkillByID(id).get();
-        skill.setName(skillRequest.getName());
-        skill.setProgress(skillRequest.getProgress());
-        skill.setConfirmsNames(skillRequest.getConfirmsNames());
-        skill.setInnerStrokeColor(skillRequest.getInnerStrokeColor());
-        skill.setOuterStrokeColor(skillRequest.getOuterStrokeColor());
-        skill.setImageSrc(skillRequest.getImageSrc());
-        
-        skillService.saveSkill(skill);
-
-        return new ResponseEntity<>("Skill actualizado", HttpStatus.OK);
-    }
-*/
                               
 }

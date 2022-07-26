@@ -39,13 +39,7 @@ public class PersonController {
         ipersonaService.savePersona(persona);
         return "Persona creada correctamente";
     }
-    /*
-    @GetMapping("/id/{id}")
-    public Optional<Persona> getPersonaByID(@PathVariable("id") Long id){
-        return ipersonaService.getPersonaByID(id);
-    }
-    */
-    
+ 
     //Metodo de apiHernan
     @GetMapping("/one/{id}")
     public ResponseEntity<Persona> getPersonaById(@PathVariable(value = "id") Long id) {
@@ -66,85 +60,16 @@ public class PersonController {
             return "No se pudo eliminar los datos del acercaDe";
         }
     }
-    //MGB
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping ("/editm/{id}")
-    public Persona updatePersona (@PathVariable Long id,
-                    @RequestParam("nombre") String nuevoNombre,
-                    @RequestParam("apellido") String nuevoApellido,
-                    @RequestParam("edad") int nuevaEdad,
-                    @RequestParam("fechaNac") String nuevaFechaNac,
-                    @RequestParam("seniority") String nuevaSeniority,
-                    @RequestParam("urlimage") String nuevaImage,
-                    @RequestParam("company") String nuevaCompany,
-                    @RequestParam("position") String nuevaPosition,
-                    @RequestParam("abouts") String nuevoAbouts){
-        
-        Persona persona = ipersonaService.findPersona(id);
-        
-        persona.setNombre(nuevoNombre);
-        persona.setApellido(nuevoApellido);
-        persona.setEdad(nuevaEdad);
-        persona.setFechaNac(nuevaFechaNac);
-        persona.setSeniority(nuevaSeniority);
-        persona.setUrlimage(nuevaImage);
-        persona.setCompany(nuevaCompany);
-        persona.setPosition(nuevaPosition);
-        persona.setAbouts(nuevoAbouts);
-        
-        ipersonaService.savePersona(persona);
-        return persona;
-    }
-    */
-    
-    //Profe sincrónico:
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/edith/{id}")
-    public Persona updatePerson(@PathVariable("id") Long id, @RequestBody Persona personaTochange) {
 
-        Persona p = ipersonaService.findPersona(id);
-        personaTochange.setId(p.getId());
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.map(personaTochange, p);
-        return ipersonaService.savePersona(p);
-    }
-    */
-    
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Persona> updateSkill(@PathVariable("id") Long id, @RequestBody Persona personaRequest) {
         Persona persona =ipersonaService.getOnePersonByID(id);
-        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
-        //skill.setPerson(skillRequest.getPerson());
         personaRequest.setId(persona.getId());
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.map(personaRequest, persona);
         return new ResponseEntity<>(ipersonaService.savePersona(persona), HttpStatus.OK);
     }
-    
-    //Del crud de producto
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/editp/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")Long id, @RequestBody Persona personaRequest){
-       
-        Persona persona = ipersonaService.getPersonaByID(id).get();
-        persona.setNombre(personaRequest.getNombre());
-        persona.setNombre(personaRequest.getNombre());
-        persona.setEdad(personaRequest.getEdad());
-        persona.setFechaNac(personaRequest.getFechaNac());
-        persona.setSeniority(personaRequest.getSeniority());
-        persona.setUrlimage(personaRequest.getUrlimage());
-        persona.setCompany(personaRequest.getCompany());
-        persona.setPosition(personaRequest.getPosition());
-        persona.setAbouts(personaRequest.getAbouts());
-        return new ResponseEntity(("persona actualizada"), HttpStatus.OK);
-    }
-*/
-                              
-                              
+                                                             
 }

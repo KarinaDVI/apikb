@@ -39,12 +39,7 @@ public class ExperienceController {
     public Experience saveExperience(@RequestBody Experience experience){
         return experienceService.saveExperience(experience);
     }
-    /*
-    @GetMapping("/id/{id}")
-    public Optional<Experience> getExperienceByID(@PathVariable("id") Long id){
-        return experienceService.getExperienceByID(id);
-    }
-*/
+
     @GetMapping("/one/{id}")
     public ResponseEntity<Experience> getExperienceById(@PathVariable(value = "id") Long id) {
         Experience experience = experienceService.getOneExperienceByID(id);
@@ -63,37 +58,12 @@ public class ExperienceController {
             return "No se pudo eliminar los datos del skill";
         }
     }
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping ("update/{id}")
-    public Experience updateExperience (@PathVariable Long id,
-                    @RequestParam("position") String position,
-                    @RequestParam("company") String company,
-                    @RequestParam("start") int starts,
-                    @RequestParam("ends") int ends,
-                    @RequestParam("urlimg") String urlimg,
-                    @RequestParam("mode") String mode
-                    ){
-        
-        Experience experience = experienceService.findExperience(id);
-        
-        experience.setPosition(position);
-        experience.setCompany(company);
-        experience.setUrlimg(urlimg);
-        experience.setStarts(starts);
-        experience.setEnds(ends);
-        experienceService.saveExperience(experience);
-        return experience;
-    }
-*/
     
      //Usar: Hernan nuevo
    @PreAuthorize("hasRole('ADMIN')")
    @PutMapping("/edit/{id}")
     public ResponseEntity<Experience> updateExperience(@PathVariable("id") Long id, @RequestBody Experience experienceRequest) {
         Experience experience =experienceService.getOneExperienceByID(id);
-        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
-        //skill.setPerson(skillRequest.getPerson());
         experienceRequest.setId(experience.getId());
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
