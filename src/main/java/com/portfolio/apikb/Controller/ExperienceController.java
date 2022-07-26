@@ -39,10 +39,12 @@ public class ExperienceController {
     public Experience saveExperience(@RequestBody Experience experience){
         return experienceService.saveExperience(experience);
     }
+    /*
     @GetMapping("/id/{id}")
     public Optional<Experience> getExperienceByID(@PathVariable("id") Long id){
         return experienceService.getExperienceByID(id);
     }
+*/
     @GetMapping("/one/{id}")
     public ResponseEntity<Experience> getExperienceById(@PathVariable(value = "id") Long id) {
         Experience experience = experienceService.getOneExperienceByID(id);
@@ -61,6 +63,7 @@ public class ExperienceController {
             return "No se pudo eliminar los datos del skill";
         }
     }
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Experience updateExperience (@PathVariable Long id,
@@ -82,6 +85,8 @@ public class ExperienceController {
         experienceService.saveExperience(experience);
         return experience;
     }
+*/
+    
      //Usar: Hernan nuevo
    @PreAuthorize("hasRole('ADMIN')")
    @PutMapping("/edit/{id}")

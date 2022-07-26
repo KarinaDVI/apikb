@@ -1,6 +1,7 @@
 
 package com.portfolio.apikb.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +21,11 @@ public class Skill {
     private Long id;
     private String name;
     private int progress;
-    private int confirms;
     private String confirmsNames;
     private String outerStrokeColor;
     private String innerStrokeColor;
+    @Column(name="imageSrc",length=2048)
+    private String imageSrc;
     
     
 }

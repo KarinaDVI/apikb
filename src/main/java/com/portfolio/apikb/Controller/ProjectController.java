@@ -38,10 +38,12 @@ public class ProjectController {
     public Project saveProject(@RequestBody Project project){
         return projectService.saveProject(project);
     }
+    /*
     @GetMapping("/id/{id}")
     public Optional<Project> getProjectByID(@PathVariable("id") Long id){
         return projectService.getProjectByID(id);
     }
+    */
     @GetMapping("/one/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable(value = "id") Long id) {
         Project project = projectService.getOneProjectByID(id);
@@ -60,6 +62,7 @@ public class ProjectController {
             return "No se pudo eliminar los datos del proyecto";
         }
     }
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Project updateProject (@PathVariable Long id,
@@ -76,12 +79,11 @@ public class ProjectController {
         projectService.saveProject(project);
         return project;
     }
+    */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable("id") Long id, @RequestBody Project projectRequest) {
         Project project =projectService.getOneProjectByID(id);
-        // .orElseThrow(() -> new ResourceNotFoundException("EducationId " + id + "not found"));
-        //skill.setPerson(skillRequest.getPerson());
         projectRequest.setId(project.getId());
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);

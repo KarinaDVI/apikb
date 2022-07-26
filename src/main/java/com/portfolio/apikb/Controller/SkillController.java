@@ -10,7 +10,6 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,12 +41,12 @@ public class SkillController {
     }
     
     //Metodo de apikb
-    
+    /*
     @GetMapping("/id/{id}")
     public Optional<Skill> getSkillByID(@PathVariable("id") Long id){
         return skillService.getSkillByID(id);
     }
-    
+    */
     
     //Metodo de apiHernan
     @GetMapping("/one/{id}")
@@ -71,31 +70,34 @@ public class SkillController {
         }
     }
     //MBG
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("/editm/{id}")
     public Skill updateSkill (@PathVariable Long id,
                     @RequestParam("nombre") String nuevoNombre,
                     @RequestParam("progress") int progress,
-                    @RequestParam("confirms") int confirms,
                     @RequestParam("confirmsNames") String confirmsNames,
                     @RequestParam("outerColor") String outerStrokeColor,
-                    @RequestParam("innerColor") String innerStrokeColor
+                    @RequestParam("innerColor") String innerStrokeColor,
+                    @RequestParam("imageSrc") String imageSrc
                     ){
         
         Skill skill = skillService.findSkill(id);
         
         skill.setName(nuevoNombre);
         skill.setProgress(progress);
-        skill.setConfirms(confirms);
         skill.setConfirmsNames(confirmsNames);
         skill.setOuterStrokeColor(outerStrokeColor);
         skill.setInnerStrokeColor(innerStrokeColor); 
+        skill.setImageSrc(imageSrc); 
         
         skillService.saveSkill(skill);
         return skill;
     }
+*/
     
     //Hernan nuevo
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edith/{id}")
     public Skill cambiarSkill(@PathVariable("id") Long id, @RequestBody Skill skillTochange) {
@@ -108,6 +110,7 @@ public class SkillController {
         modelMapper.map(skillTochange, s);
         return skillService.saveSkill(s);
     }
+*/
     
     //Usar: Hernan nuevo
    @PreAuthorize("hasRole('ADMIN')")
@@ -125,6 +128,7 @@ public class SkillController {
     }
     
     //Refrito del crud de productos
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit2/{id}")
     public ResponseEntity<?> editSkill(@PathVariable("id") Long id, @RequestBody Skill skillRequest) {
@@ -132,13 +136,15 @@ public class SkillController {
         Skill skill =skillService.getSkillByID(id).get();
         skill.setName(skillRequest.getName());
         skill.setProgress(skillRequest.getProgress());
-        skill.setConfirms(skillRequest.getConfirms());
         skill.setConfirmsNames(skillRequest.getConfirmsNames());
         skill.setInnerStrokeColor(skillRequest.getInnerStrokeColor());
         skill.setOuterStrokeColor(skillRequest.getOuterStrokeColor());
+        skill.setImageSrc(skillRequest.getImageSrc());
+        
         skillService.saveSkill(skill);
 
         return new ResponseEntity<>("Skill actualizado", HttpStatus.OK);
     }
+*/
                               
 }

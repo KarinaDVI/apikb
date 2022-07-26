@@ -39,10 +39,12 @@ public class EducationController {
     public Education saveEducation(@RequestBody Education education){
         return educationService.saveEducation(education);
     }
+    /*
     @GetMapping("/id/{id}")
     public Optional<Education> getEducationByID(@PathVariable("id") Long id){
         return educationService.getEducationByID(id);
     }
+*/
     @GetMapping("/one/{id}")
     public ResponseEntity<Education> getEducationById(@PathVariable(value = "id") Long id) {
         Education education = educationService.getOneEducationByID(id);
@@ -73,6 +75,7 @@ public class EducationController {
         modelMapper.map(educationRequest, education);
         return new ResponseEntity<>(educationService.saveEducation(education), HttpStatus.OK);
     }
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/editMM/{id}")
     public Education editarEducation(@PathVariable("id") Long id, @RequestBody Education educationTochange) {
@@ -85,6 +88,8 @@ public class EducationController {
         modelMapper.map(educationTochange, ed);
         return educationService.saveEducation(ed);
     }
+*/
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("update/{id}")
     public Education updateEducation (@PathVariable Long id,
@@ -106,4 +111,5 @@ public class EducationController {
         educationService.saveEducation(education);
         return education;
     }
+*/
 }

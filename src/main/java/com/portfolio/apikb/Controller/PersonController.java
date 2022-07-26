@@ -39,10 +39,13 @@ public class PersonController {
         ipersonaService.savePersona(persona);
         return "Persona creada correctamente";
     }
+    /*
     @GetMapping("/id/{id}")
     public Optional<Persona> getPersonaByID(@PathVariable("id") Long id){
         return ipersonaService.getPersonaByID(id);
     }
+    */
+    
     //Metodo de apiHernan
     @GetMapping("/one/{id}")
     public ResponseEntity<Persona> getPersonaById(@PathVariable(value = "id") Long id) {
@@ -64,6 +67,7 @@ public class PersonController {
         }
     }
     //MGB
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping ("/editm/{id}")
     public Persona updatePersona (@PathVariable Long id,
@@ -92,8 +96,10 @@ public class PersonController {
         ipersonaService.savePersona(persona);
         return persona;
     }
+    */
     
     //Profe sincrónico:
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edith/{id}")
     public Persona updatePerson(@PathVariable("id") Long id, @RequestBody Persona personaTochange) {
@@ -105,6 +111,7 @@ public class PersonController {
         modelMapper.map(personaTochange, p);
         return ipersonaService.savePersona(p);
     }
+    */
     
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
@@ -120,6 +127,7 @@ public class PersonController {
     }
     
     //Del crud de producto
+    /*
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/editp/{id}")
     public ResponseEntity<?> update(@PathVariable("id")Long id, @RequestBody Persona personaRequest){
@@ -136,6 +144,7 @@ public class PersonController {
         persona.setAbouts(personaRequest.getAbouts());
         return new ResponseEntity(("persona actualizada"), HttpStatus.OK);
     }
+*/
                               
                               
 }
