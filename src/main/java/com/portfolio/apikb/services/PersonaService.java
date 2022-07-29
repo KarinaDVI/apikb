@@ -42,8 +42,6 @@ public class PersonaService implements IPersonaService{
         Period periodo = fechaO.until(fechaHoy);
         int anios=periodo.getYears();
         perso.setEdad(anios);
-        //actualiza la base
-        savePersona(perso);
         return perso;
     }
     
