@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/apikb/project")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class ProjectController {
     @Autowired
     ProjectService projectService;

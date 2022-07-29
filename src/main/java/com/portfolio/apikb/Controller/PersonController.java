@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/apikb/person")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class PersonController {
     @Autowired
     IPersonaService ipersonaService;
@@ -34,7 +34,7 @@ public class PersonController {
     public List<Persona> getAllAbout(){
         return ipersonaService.getPersona();
     }
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public String savePersona(@RequestBody Persona persona){
         ipersonaService.savePersona(persona);

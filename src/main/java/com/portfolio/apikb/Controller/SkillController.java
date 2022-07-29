@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/apikb/skill")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class SkillController {
     @Autowired
     SkillService skillService;

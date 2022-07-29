@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/apikb/education")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class EducationController {
     @Autowired
     EducationService educationService;

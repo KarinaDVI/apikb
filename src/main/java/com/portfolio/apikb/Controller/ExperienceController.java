@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/apikb/experience")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class ExperienceController {
     @Autowired
     ExperienceService experienceService;
